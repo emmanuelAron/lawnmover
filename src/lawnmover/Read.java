@@ -11,10 +11,11 @@ import java.util.List;
  */
 public class Read {
 
-    static List<String> lines;
+    private static List<String> lines;
+    private static String pathToFile = "file.txt";
 
     public static void main(String[] args) {
-        lines = stockFile("file.txt");
+        lines = stockFile(pathToFile);
         for (String s : lines) {
             System.out.println(s);
         }
@@ -23,10 +24,10 @@ public class Read {
 
     /***
      * Stock the different lines readed from the file in a list.
-     * @param pathToFile
+     * @param pathToFile pathToFile
      * @return lines
      */
-    public static List<String> stockFile(String pathToFile) {
+    static List<String> stockFile(String pathToFile) {
         List<String> lines = null;
         try {
             lines = new ArrayList<>();
@@ -47,7 +48,7 @@ public class Read {
      * @param pathToFile
      * @return the grass size
      */
-    public static int grassSize(String pathToFile){
+     static int grassSize(String pathToFile){
         return stockFile(pathToFile).size()+1;
     }
 }

@@ -1,9 +1,27 @@
 package lawnmover;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Lawnmover {
     private int x;
     private int y;
-    private char direction;
+    private char direction;//initial orientation
+    /***
+     * It corresponds to GAGAGAGAA , for instance.
+     */
+    private String path;
+    //
+    private String pathToFile = "file.txt";
+    private int size = Read.grassSize(pathToFile);
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public int getX() {
         return x;
@@ -35,6 +53,13 @@ public class Lawnmover {
         this.direction = direction;
     }
 
+    public Lawnmover(int x, int y, char direction,String path) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.path = path;
+    }
+
     public Lawnmover() {
         //default direction to avoid exceptions
         setDirection('N');
@@ -46,16 +71,24 @@ public class Lawnmover {
     public void move() {
         switch (direction) {
             case 'N':
-                y++;
+                if(y<=size) {
+                    y++;
+                }
                 break;
             case 'S':
-                y--;
+                if(y>=0) {
+                    y--;
+                }
                 break;
             case 'E':
-                x++;
+                if(x<=size) {
+                    x++;
+                }
                 break;
             case 'W':
-                x--;
+                if(x>=0) {
+                    x--;
+                }
                 break;
         }
     }
@@ -94,29 +127,43 @@ public class Lawnmover {
         }
     }
 
+    /***
+     * Calculate/Move the lawnmover , given a path.
+     * @param path
+     */
+    public void calculate(String path){
+        String[] directions = path.split("");
+        List<String> l_directions = Arrays.asList(directions);
+        l_directions.forEach(letter ->{
+            if ("A".equals(letter)) {
+                move();
+            }
+            if ("G".equals(letter)) {
+                turnLeft();
+            }
+            if ("D".equals(letter)) {
+                turnRight();
+            }
+        });
+    }
+
     @Override
     public String toString() {
-        return "Lawnmover{" + "x=" + x + ", y=" + y + ", direction=" + direction + '}';
+        return   x + " " + y + " " + direction ;
     }
 
     public static void main(String[] args) {
-        Lawnmover t = new Lawnmover(1, 2, 'N');
-        System.out.println(t);
-        /*t.tournerGauche();
-        t.avancer();
-        System.out.println(t);
+        String path = "GAGAGAGAA";
+        Lawnmover lm = new Lawnmover(1, 2, 'N',path);
+        System.out.println(lm);
+        lm.calculate(path);
+        System.out.println(lm);
 
-        t.tournerGauche();
-        t.avancer();
-        System.out.println(t);
+        String path2 = "AADAADADDA";
+        Lawnmover lm2 = new Lawnmover(3, 3, 'E',path2);
+        System.out.println(lm2);
+        lm2.calculate(path2);
+        System.out.println(lm2);
 
-        t.tournerGauche();
-        t.avancer();
-        System.out.println(t);
-
-        t.tournerGauche();
-        t.avancer();
-        t.avancer();
-        System.out.println(t);*/
     }
 }
